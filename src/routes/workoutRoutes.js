@@ -6,12 +6,12 @@ let controller = require("../controllers/workoutController");
 
 routes.get("/exercise", controller.getAllExercise);
 
-routes.get("/exercise/:id", controller.getSingleExercise);
+routes.get("/exercise/:exerciseID", controller.getSingleExercise);
 
-routes.delete("/exercise/:id", controller.deleteExercise);
+routes.delete("/exercise/:exerciseID", controller.deleteExercise);
 
 routes.post("/exercise", controller.createExercise);
 
-routes.put("/exercise/:id", controller.updateExercise);
+routes.put("/exercise/:exerciseID", controller.updateExercise);
 
 module.exports = routes;

@@ -7,14 +7,14 @@ let db = require("../utility/db");
  * and returns a summary of all the todos items in the response
  * If the query failes for any reason, then return 500 status code
  */
-let getAllExercise = function(req, res){
+let getAllMuscleGroup = function(req, res){
 // what kind of query do we send
 // to get all the items in the database
-    let sql = "select exerciseID, exerciseName, exerciseDescription from exercise"; 
+    let sql = "select muscleID, muscleName from muscleGroup"; 
 
     db.query(sql, function(err, rows){
         if(err){
-            console.log("list exercise query failed", err);
+            console.log("list muscleGroup query failed", err);
             res.sendStatus(500); //response back because it was our fault
         }else{
             res.json(rows);
@@ -33,21 +33,21 @@ let getAllExercise = function(req, res){
  * 
  * /exercise/:workout
  */
- let getSingleExercise = function(req, res){
+ let getSingleMuscleGroup = function(req, res){
     // what kind of query do we send
     // to get one the items in the database
     
             // this is bad, you should not do this...
-            let exerciseID = req.params.exerciseID; // because the id is a path param
+            let muscleID = req.params.muscleID; // because the id is a path param
     
             // if id is falsey (null, undefined, '')
-            if(!exerciseID){
+            if(!muscleID){
                 res.sendStatus(404);
                 return;
             }
     
-            let sql = "select exerciseID, exerciseName, exerciseDescription from exercise where exerciseID = ?";
-            let params = [exerciseID];
+            let sql = "select muscleID, muscleName from muscleGroup where muscleID = ?";
+            let params = [muscleID];
     
             db.query(sql, params, function(err, rows){
                 if(err){
@@ -55,7 +55,7 @@ let getAllExercise = function(req, res){
                 res.sendStatus(500);
             } else { 
                 if(rows.length > 1){
-                    console.log("returned more than 1 row for exerciseID", exerciseID);
+                    console.log("returned more than 1 row for muscleID", muscleID);
                     res.sendStatus(500);
                 } else if (rows.length == 0){
                     res.json(null);
@@ -89,21 +89,21 @@ let getAllExercise = function(req, res){
  * 
  * if the item has already been deleted we will return "Item doesn't exist"
  */
- let deleteExercise = function(req, res){
+ let deleteMuscleGroup = function(req, res){
     // what kind of query do we send
     // to get delete the items in the database
     
-        let sql = "delete from exercise where exerciseID = ?";
+        let sql = "delete from muscleGroup where muscleID = ?";
         
-        let exerciseID = req.params.exerciseID;
-        let params = [exerciseID];
+        let muscleID = req.params.muscleID;
+        let params = [muscleID];
     
         db.query(sql, params, function(err, rows){
             if(err){
                 console.log("Nothing exists", err);
                 res.sendStatus(400);
             }else{
-                console.log("exerciseID successfully deleted total rows =",  rows.affectedRows,"exerciseID =", exerciseID);
+                console.log("muscleID successfully deleted total rows =",  rows.affectedRows,"muscleID =", muscleID);
                 res.json(rows);
             }
         });
@@ -121,15 +121,14 @@ let getAllExercise = function(req, res){
  * 
  * the response will include.......
  */
- let createExercise = function(req, res){
+ let createMuscleGroup = function(req, res){
     // what kind of query do we send
     // to Post the items in the database
     
         // the comlumns in the table are the contract between express and the db
-        let sql = "INSERT INTO exercise (exerciseName, exerciseDescription) VALUES (?, ?)"
+        let sql = "INSERT INTO muscleGroup (muscleName) VALUES (?)"
         let params = [
-            req.body.exerciseName, //this is the contrace with the client side, we expect in the body of the req
-            req.body.exerciseDescription, //this is the contrace with the client side, we expect in the body of the req
+            req.body.muscleName, //this is the contrace with the client side, we expect in the body of the req
         ];
     
         db.query(sql, params, function(err, rows){
@@ -158,19 +157,19 @@ let getAllExercise = function(req, res){
  * update the exercise based on the id that is a path parameter
  *  
  */
- let updateExercise = function(req, res){
+ let updateMuscleGroup = function(req, res){
     // what kind of query do we send
     // to Put the items in the database
     
         // the comlumns in the table are the contract between express and the db
-        let exerciseID = req.params.exerciseID;
-        if(!exerciseID){
+        let muscleID = req.params.muscleID;
+        if(!muscleID){
             res.sendStatus(500);
             return;
         }
 
-        let sql = "update exercise set exerciseName = ?, exerciseDescription =? where exerciseID = ?";
-        let params = [req.body.exerciseName, req.body.exerciseDescription, exerciseID]
+        let sql = "update muscleGroup set muscleName = ? where muscleID = ?";
+        let params = [req.body.muscleName, muscleID]
         
 
         db.query(sql, params, function(err, rows){
@@ -184,4 +183,4 @@ let getAllExercise = function(req, res){
         });
     };
 
-module.exports = {getAllExercise, getSingleExercise, deleteExercise, updateExercise, createExercise};
+module.exports = {getAllMuscleGroup, getSingleMuscleGroup, deleteMuscleGroup, updateMuscleGroup, createMuscleGroup};

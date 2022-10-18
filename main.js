@@ -19,11 +19,13 @@ app.use(express.static("/public"));
 
 // will capture all the todo routes
 let workoutRoutes = require("./src/routes/workoutRoutes");
-let messageRoutes = require("./src/routes/messageRoute")
-let authenticationRoutes = require("./src/routes/authenticationRoute")
+let messageRoutes = require("./src/routes/messageRoute");
+let authenticationRoutes = require("./src/routes/authenticationRoute");
+let muscleGroupRoutes = require("./src/routes/muscleGroupRoutes");
 app.use(workoutRoutes);
 app.use(messageRoutes);
 app.use(authenticationRoutes);
+app.use(muscleGroupRoutes);
 
 
 
