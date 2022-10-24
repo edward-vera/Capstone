@@ -1,6 +1,5 @@
 
 let db = require("../utility/db");
-
 let jwt = require("jsonwebtoken");
 
 // helps with hashing user passwords, storing and checking

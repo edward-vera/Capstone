@@ -1,7 +1,4 @@
 
-// NOT USING THIS CONTROLLER AT THIS POINT BUT LEAVING IT IN JUST IN CASE
-
-
 const { resume } = require("../utility/db");
 let db = require("../utility/db");
 
@@ -10,14 +7,14 @@ let db = require("../utility/db");
  * and returns a summary of all the todos items in the response
  * If the query failes for any reason, then return 500 status code
  */
-let getAllMuscleGroup = function(req, res){
+let getAllExercise = function(req, res){
 // what kind of query do we send
 // to get all the items in the database
-    let sql = "select muscleId, muscleName from muscleGroup"; 
+    let sql = "select exerciseId, exerciseName, exerciseDescription, muscleGroupOne, muscleGroupTwo, muscleGroupThree from exercise"; 
 
     db.query(sql, function(err, rows){
         if(err){
-            console.log("list muscleGroup query failed", err);
+            console.log("list exercise query failed", err);
             res.sendStatus(500); //response back because it was our fault
         }else{
             res.json(rows);
@@ -36,21 +33,21 @@ let getAllMuscleGroup = function(req, res){
  * 
  * /exercise/:workout
  */
- let getSingleMuscleGroup = function(req, res){
+ let getSingleExercise = function(req, res){
     // what kind of query do we send
     // to get one the items in the database
     
             // this is bad, you should not do this...
-            let muscleId = req.params.muscleId; // because the id is a path param
+            let exerciseId = req.params.exerciseId; // because the id is a path param
     
             // if id is falsey (null, undefined, '')
-            if(!muscleId){
+            if(!exerciseId){
                 res.sendStatus(404);
                 return;
             }
     
-            let sql = "select muscleId, muscleName from muscleGroup where muscleId = ?";
-            let params = [muscleId];
+            let sql = "select exerciseId, exerciseName, exerciseDescription, muscleGroupOne, muscleGroupTwo, muscleGroupThree from exercise where exerciseId = ?";
+            let params = [exerciseId];
     
             db.query(sql, params, function(err, rows){
                 if(err){
@@ -58,7 +55,7 @@ let getAllMuscleGroup = function(req, res){
                 res.sendStatus(500);
             } else { 
                 if(rows.length > 1){
-                    console.log("returned more than 1 row for muscleId", muscleId);
+                    console.log("returned more than 1 row for exerciseId", exerciseId);
                     res.sendStatus(500);
                 } else if (rows.length == 0){
                     res.json(null);
@@ -92,21 +89,21 @@ let getAllMuscleGroup = function(req, res){
  * 
  * if the item has already been deleted we will return "Item doesn't exist"
  */
- let deleteMuscleGroup = function(req, res){
+ let deleteExercise = function(req, res){
     // what kind of query do we send
     // to get delete the items in the database
     
-        let sql = "delete from muscleGroup where muscleId = ?";
+        let sql = "delete from exercise where exerciseId = ?";
         
-        let muscleId = req.params.muscleId;
-        let params = [muscleId];
+        let exerciseId = req.params.exerciseId;
+        let params = [exerciseId];
     
         db.query(sql, params, function(err, rows){
             if(err){
                 console.log("Nothing exists", err);
                 res.sendStatus(400);
             }else{
-                console.log("muscleId successfully deleted total rows =",  rows.affectedRows,"muscleId =", muscleId);
+                console.log("exerciseId successfully deleted total rows =",  rows.affectedRows,"exerciseId =", exerciseId);
                 res.json(rows);
             }
         });
@@ -124,14 +121,18 @@ let getAllMuscleGroup = function(req, res){
  * 
  * the response will include.......
  */
- let createMuscleGroup = function(req, res){
+ let createExercise = function(req, res){
     // what kind of query do we send
     // to Post the items in the database
     
         // the comlumns in the table are the contract between express and the db
-        let sql = "INSERT INTO muscleGroup (muscleName) VALUES (?)"
+        let sql = "INSERT INTO exercise (exerciseName, exerciseDescription, muscleGroupOne, muscleGroupTwo, muscleGroupThree) VALUES (?, ?, ?, ? , ?)"
         let params = [
-            req.body.muscleName, //this is the contrace with the client side, we expect in the body of the req
+            req.body.exerciseName, //this is the contrace with the client side, we expect in the body of the req
+            req.body.exerciseDescription, //this is the contrace with the client side, we expect in the body of the req
+            req.body.muscleGroupOne, //this is the contrace with the client side, we expect in the body of the req
+            req.body.muscleGroupTwo, //this is the contrace with the client side, we expect in the body of the req
+            req.body.muscleGroupThree //this is the contrace with the client side, we expect in the body of the req
         ];
     
         db.query(sql, params, function(err, rows){
@@ -160,19 +161,19 @@ let getAllMuscleGroup = function(req, res){
  * update the exercise based on the id that is a path parameter
  *  
  */
- let updateMuscleGroup = function(req, res){
+ let updateExercise = function(req, res){
     // what kind of query do we send
     // to Put the items in the database
     
         // the comlumns in the table are the contract between express and the db
-        let muscleId = req.params.muscleId;
-        if(!muscleId){
+        let exerciseId = req.params.exerciseId;
+        if(!exerciseId){
             res.sendStatus(500);
             return;
         }
 
-        let sql = "update muscleGroup set muscleName = ? where muscleId = ?";
-        let params = [req.body.muscleName, muscleId]
+        let sql = "update exercise set exerciseName = ?, exerciseDescription =?, muscleGroupOne = ?, muscleGroupTwo = ?, muscleGroupThree = ? where exerciseId = ?";
+        let params = [req.body.exerciseName, req.body.exerciseDescription, req.body.muscleGroupOne, req.body.muscleGroupTwo, req.body.muscleGroupThree, exerciseId]
         
 
         db.query(sql, params, function(err, rows){
@@ -186,4 +187,4 @@ let getAllMuscleGroup = function(req, res){
         });
     };
 
-module.exports = {getAllMuscleGroup, getSingleMuscleGroup, deleteMuscleGroup, updateMuscleGroup, createMuscleGroup};
+module.exports = {getAllExercise, getSingleExercise, deleteExercise, updateExercise, createExercise};

@@ -13,7 +13,7 @@ connection.connect();
 
 
 // this is async
-connection.query("select now()"  , function(err, rows){
+connection.query("select now()" , function(err, rows){
     if(err){
         console.log("connection not successful,", err)
     }else{

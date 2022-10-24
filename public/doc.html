@@ -1,23 +1,108 @@
 <html>
     <body>
         <h1>How the workout app works!</h1>
-
-
+        <h2>THIS IS FOR THE EXERCISE CONTROLLER</h2>
         <p>GET /exercise</p>
-        <span>Selects all ids, workouts, descriptions, and notes from exercise</span>
-        <p>GET /exercise/:id</p>
-        <span>"select id, workout, description, notes from exercises with a specific id</span>
+        <span>Selects all exerciseId, exerciseName, exerciseDescription, muscleGroupOne, muscleGroupTwo, muscleGroupThree from exercise</span>
+        <p>GET /exercise/exerciseId</p>
+        <span>"select exerciseId, exerciseName, exerciseDescription, muscleGroupOne, muscleGroupTwo, muscleGroupThree from exercises with a specific id</span>
         <p>POST /exercise</p>
-        <span>Creates an exercise using workouts, descriptions, and notes</span>
-        <p>PUSH /exercise/id</p>
+        <span>Creates an exercise using exerciseName, exerciseDescription, muscleGroupOne, muscleGroupTwo, muscleGroupThree</span>
+        <p>PUSH /exercise/exerciseId</p>
         <span>Updates an exercise that uses a specific id</span>
-        <p>DELETE /exercise/id</p>
+        <p>DELETE /exercise/exerciseId</p>
         <span>Deletes and exercise that uses a specific id</span>
+
+
+        <h2>THIS IS FOR THE MUSCLE GROUP CONTROLLER</h2>
+        <p>GET /muscle</p>
+        <span>Selects all muscleID, muscleName from muscle</span>
+        <p>GET /muscle/muscleId</p>
+        <span>Selects muscleID, muscleName from exercises with a specific id</span>
+        <p>POST /muscle</p>
+        <span>Creates an muscle using muscleID, muscleName</span>
+        <p>PUSH /muscle/muscleId</p>
+        <span>Updates an muscle that uses a specific id</span>
+        <p>DELETE /muscle/muscleId</p>
+        <span>Deletes and muscle that uses a specific id</span>
+
+
+        <h2>THIS IS FOR THE LOG CONTROLLER</h2>
+        <p>GET /journal</p>
+        <span>Selects all muscleID, muscleName from journal</span>
+        <p>GET /journal/logId</p>
+        <span>Selects muscleID, muscleName from exercises with a specific id</span>
+        <p>POST /journal</p>
+        <span>Creates an journal using muscleID, muscleName</span>
+        <p>PUSH /journal/logId</p>
+        <span>Updates an journal that uses a specific id</span>
+        <p>DELETE /journal/logId</p>
+        <span>Deletes and journal that uses a specific id</span>
+
+
+
+        <h2>THIS IS FOR THE AUTHENTICATION CONTROLLER</h2>
+        <p>GET /register</p>
+        <span>Registers a user</span>
+        <p>GET /login</p>
+        <span>Logs in a user</span>
+
+
+
+
     </body>
 </html>
 
+<br>
+<br>
+<br>
+<img src="../images/ERD.png">
+<br>
+<br>
+<br>
 
 
+
+<!-- TABLE STATEMENTS WITH DATATYPES -->
+
+create table logJournalTable (
+logId int auto_increment,
+userId int,
+exerciseId int,
+workoutId int,
+workoutName varchar(100),
+notes varchar(100000),
+reps varchar (10),
+sets varchar (10),
+weight varchar (4),
+primary key (logId),
+foreign key (userId) references userslogins(userId),
+foreign key (exerciseId) references exercise(exerciseId)
+  )
+
+create table exercise (
+exerciseId int auto_increment primary key,
+exerciseName varchar (100),
+exerciseDescription varchar (100),
+muscleGroupOne varchar (100),
+muscleGroupTwo varchar (100),
+muscleGroupThree varchar (100)
+  )
+  
+  
+create table userslogins (
+userId int auto_increment primary key,
+userName varchar (100),
+password_hash varchar (100),
+fullName varchar (100),
+email varchar (100)
+  )
+
+
+create table muscleGroup (
+    muscleId int auto_increment primary key,
+    muscleName varchar (100)
+)
 
 <!-- GET /exercise -->
 <!-- GET /exercise/id -->
